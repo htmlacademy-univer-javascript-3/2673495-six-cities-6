@@ -68,8 +68,7 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
         rating={place.rating}
         name={place.title}
         type={place.type}
-      >
-      </PlaceCard>
+      />
     </li>
   ));
 
