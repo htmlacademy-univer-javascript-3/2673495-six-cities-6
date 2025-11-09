@@ -1,11 +1,14 @@
-export default function OfferPage() : JSX.Element {
+import { Link } from 'react-router-dom';
+import CommentForm from '../../components/comment-form';
+
+export default function OfferPage(): JSX.Element {
   return (
     <div className="page">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link" href="main.html">
+              <Link className="header__logo-link" to="/">
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -13,21 +16,21 @@ export default function OfferPage() : JSX.Element {
                   width={81}
                   height={41}
                 />
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <a
+                  <Link
                     className="header__nav-link header__nav-link--profile"
-                    href="#"
+                    to="/favorites"
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                    Oliver.conner@gmail.com
+                      Oliver.conner@gmail.com
                     </span>
                     <span className="header__favorite-count">3</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="header__nav-item">
                   <a className="header__nav-link" href="#">
@@ -94,7 +97,7 @@ export default function OfferPage() : JSX.Element {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">
-                Beautiful &amp; luxurious studio at great location
+                  Beautiful &amp; luxurious studio at great location
                 </h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width={31} height={33}>
@@ -111,12 +114,14 @@ export default function OfferPage() : JSX.Element {
                 <span className="offer__rating-value rating__value">4.8</span>
               </div>
               <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">Apartment</li>
+                <li className="offer__feature offer__feature--entire">
+                  Apartment
+                </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                3 Bedrooms
+                  3 Bedrooms
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                Max 4 adults
+                  Max 4 adults
                 </li>
               </ul>
               <div className="offer__price">
@@ -155,9 +160,9 @@ export default function OfferPage() : JSX.Element {
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
-                    A quiet cozy and picturesque that hides behind a a river by the
-                    unique lightness of Amsterdam. The building is green and from
-                    18th century.
+                    A quiet cozy and picturesque that hides behind a a river by
+                    the unique lightness of Amsterdam. The building is green and
+                    from 18th century.
                   </p>
                   <p className="offer__text">
                     An independent House, strategically located between Rembrand
@@ -168,7 +173,7 @@ export default function OfferPage() : JSX.Element {
               </div>
               <section className="offer__reviews reviews">
                 <h2 className="reviews__title">
-                Reviews · <span className="reviews__amount">1</span>
+                  Reviews · <span className="reviews__amount">1</span>
                 </h2>
                 <ul className="reviews__list">
                   <li className="reviews__item">
@@ -192,9 +197,9 @@ export default function OfferPage() : JSX.Element {
                         </div>
                       </div>
                       <p className="reviews__text">
-                        A quiet cozy and picturesque that hides behind a a river by
-                        the unique lightness of Amsterdam. The building is green and
-                        from 18th century.
+                        A quiet cozy and picturesque that hides behind a a river
+                        by the unique lightness of Amsterdam. The building is
+                        green and from 18th century.
                       </p>
                       <time className="reviews__time" dateTime="2019-04-24">
                         April 2019
@@ -202,115 +207,7 @@ export default function OfferPage() : JSX.Element {
                     </div>
                   </li>
                 </ul>
-                <form className="reviews__form form" action="#" method="post">
-                  <label className="reviews__label form__label" htmlFor="review">
-                    Your review
-                  </label>
-                  <div className="reviews__rating-form form__rating">
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={5}
-                      id="5-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="5-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="perfect"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={4}
-                      id="4-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="4-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="good"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={3}
-                      id="3-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="3-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="not bad"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={2}
-                      id="2-stars"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="2-stars"
-                      className="reviews__rating-label form__rating-label"
-                      title="badly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                    <input
-                      className="form__rating-input visually-hidden"
-                      name="rating"
-                      defaultValue={1}
-                      id="1-star"
-                      type="radio"
-                    />
-                    <label
-                      htmlFor="1-star"
-                      className="reviews__rating-label form__rating-label"
-                      title="terribly"
-                    >
-                      <svg className="form__star-image" width={37} height={33}>
-                        <use xlinkHref="#icon-star" />
-                      </svg>
-                    </label>
-                  </div>
-                  <textarea
-                    className="reviews__textarea form__textarea"
-                    id="review"
-                    name="review"
-                    placeholder="Tell how was your stay, what you like and what can be improved"
-                    defaultValue={''}
-                  />
-                  <div className="reviews__button-wrapper">
-                    <p className="reviews__help">
-                    To submit review please make sure to set{' '}
-                      <span className="reviews__star">rating</span> and describe
-                    your stay with at least{' '}
-                      <b className="reviews__text-amount">50 characters</b>.
-                    </p>
-                    <button
-                      className="reviews__submit form__submit button"
-                      type="submit"
-                      disabled
-                    >
-                    Submit
-                    </button>
-                  </div>
-                </form>
+                <CommentForm />
               </section>
             </div>
           </div>
@@ -319,7 +216,7 @@ export default function OfferPage() : JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">
-            Other places in the neighbourhood
+              Other places in the neighbourhood
             </h2>
             <div className="near-places__list places__list">
               <article className="near-places__card place-card">
@@ -338,7 +235,9 @@ export default function OfferPage() : JSX.Element {
                   <div className="place-card__price-wrapper">
                     <div className="place-card__price">
                       <b className="place-card__price-value">€80</b>
-                      <span className="place-card__price-text">/&nbsp;night</span>
+                      <span className="place-card__price-text">
+                        /&nbsp;night
+                      </span>
                     </div>
                     <button
                       className="place-card__bookmark-button place-card__bookmark-button--active button"
@@ -382,7 +281,9 @@ export default function OfferPage() : JSX.Element {
                   <div className="place-card__price-wrapper">
                     <div className="place-card__price">
                       <b className="place-card__price-value">€132</b>
-                      <span className="place-card__price-text">/&nbsp;night</span>
+                      <span className="place-card__price-text">
+                        /&nbsp;night
+                      </span>
                     </div>
                     <button
                       className="place-card__bookmark-button button"
@@ -429,7 +330,9 @@ export default function OfferPage() : JSX.Element {
                   <div className="place-card__price-wrapper">
                     <div className="place-card__price">
                       <b className="place-card__price-value">€180</b>
-                      <span className="place-card__price-text">/&nbsp;night</span>
+                      <span className="place-card__price-text">
+                        /&nbsp;night
+                      </span>
                     </div>
                     <button
                       className="place-card__bookmark-button button"
@@ -462,8 +365,5 @@ export default function OfferPage() : JSX.Element {
         </div>
       </main>
     </div>
-
-
   );
-
 }

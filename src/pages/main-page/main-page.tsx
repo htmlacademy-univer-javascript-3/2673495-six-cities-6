@@ -1,84 +1,23 @@
-import PlaceCard from '../../components/place-card';
+import { Link } from 'react-router-dom';
+import { placeCardProps } from '../../components/place-card';
+import PlaceCardList from '../../components/place-card-list';
 
 type MainPageProps = {
   placesCount: number;
+  offers: placeCardProps[];
 };
 
-const places = [
-  {
-    id: 1,
-    mark: true,
-    imageSrc: 'markup/img/apartment-01.jpg',
-    priceValue: 120,
-    isInBookmarks: false,
-    rating: 4,
-    title: 'Beautiful & luxurious apartment at great location',
-    type: 'Apartment',
-  },
-  {
-    id: 2,
-    mark: false,
-    imageSrc: 'markup/img/room.jpg',
-    priceValue: 80,
-    isInBookmarks: true,
-    rating: 4,
-    title: 'Wood and stone place',
-    type: 'Room',
-  },
-  {
-    id: 3,
-    mark: false,
-    imageSrc: 'markup/img/apartment-02.jpg',
-    priceValue: 132,
-    isInBookmarks: false,
-    rating: 4,
-    title: 'Canal View Prinsengracht',
-    type: 'Apartment',
-  },
-  {
-    id: 4,
-    mark: true,
-    imageSrc: 'markup/img/apartment-03.jpg',
-    priceValue: 180,
-    isInBookmarks: false,
-    rating: 5,
-    title: 'Nice, cozy, warm big bed apartment',
-    type: 'Apartment',
-  },
-  {
-    id: 5,
-    mark: false,
-    imageSrc: 'markup/img/room.jpg',
-    priceValue: 80,
-    isInBookmarks: true,
-    rating: 4,
-    title: 'Wood and stone place',
-    type: 'Room',
-  },
-];
-
-function MainPage({ placesCount }: MainPageProps): JSX.Element {
-  const listItems = places.map((place) => (
-    <li key={place.id}>
-      <PlaceCard
-        mark={place.mark}
-        imageSrc={place.imageSrc}
-        priceValue={place.priceValue}
-        isInBookmarks={place.isInBookmarks}
-        rating={place.rating}
-        name={place.title}
-        type={place.type}
-      />
-    </li>
-  ));
-
+function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
+              <Link
+                className="header__logo-link header__logo-link--active"
+                to="/"
+              >
                 <img
                   className="header__logo"
                   src="img/logo.svg"
@@ -87,21 +26,21 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
                   height="41"
                 >
                 </img>
-              </a>
+              </Link>
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
                 <li className="header__nav-item user">
-                  <a
+                  <Link
                     className="header__nav-link header__nav-link--profile"
-                    href="#"
+                    to="/favorites"
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
                       Oliver.conner@gmail.com
                     </span>
                     <span className="header__favorite-count">3</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="header__nav-item">
                   <a className="header__nav-link" href="#">
@@ -186,9 +125,7 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                <ul className="places_cards">
-                  <li>{listItems}</li>
-                </ul>
+                <PlaceCardList offers={offers} />
               </div>
             </section>
             <div className="cities__right-section">
