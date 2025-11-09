@@ -1,18 +1,9 @@
 import { Link } from 'react-router-dom';
+import { placeCardProps } from './place-card';
 
-export type placeCardProps = {
-  id: number;
-  mark: boolean;
-  imageSrc: string;
-  priceValue: number;
-  rating: number;
-  isInBookmarks: boolean;
-  name: string;
-  type: string;
-};
+type FavoritesCardProps = placeCardProps;
 
-
-function PlaceCard({
+function FavoritesCard({
   id,
   mark,
   imageSrc,
@@ -21,31 +12,30 @@ function PlaceCard({
   isInBookmarks,
   name,
   type,
-}: placeCardProps): JSX.Element {
+}: FavoritesCardProps): JSX.Element {
   return (
-    <article className="cities__card place-card">
+    <article className="favorites__card place-card">
       {mark && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
             src={imageSrc}
-            width="260"
-            height="200"
+            width={150}
+            height={110}
             alt="Place image"
-          >
-          </img>
+          />
         </Link>
       </div>
-      <div className="place-card__info">
+      <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{priceValue}</b>
-            <span className="place-card__price-text">&#47;&nbsp;night</span>
+            <span className="place-card__price-text">/&nbsp;night</span>
           </div>
           <button
             className={`place-card__bookmark-button ${
@@ -53,17 +43,15 @@ function PlaceCard({
             } button`}
             type="button"
           >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
+            <svg className="place-card__bookmark-icon" width={18} height={19}>
+              <use xlinkHref="#icon-bookmark" />
             </svg>
-            <span className="visually-hidden">
-              {isInBookmarks ? 'In' : 'To'} bookmarks
-            </span>
+            <span className="visually-hidden">In bookmarks</span>
           </button>
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: `${(rating / 5) * 100}%` }}></span>
+            <span style={{ width: `${(rating / 5) * 100}%` }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -76,4 +64,4 @@ function PlaceCard({
   );
 }
 
-export default PlaceCard;
+export default FavoritesCard;
