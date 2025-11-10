@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { placeCardProps } from '../../components/place-card';
+import { OffersType } from '../../mocks/offers';
 import PlaceCardList from '../../components/place-card-list';
+import Map2 from '../../components/map';
 
 type MainPageProps = {
   placesCount: number;
-  offers: placeCardProps[];
+  offers: OffersType[];
 };
 
 function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
@@ -129,7 +130,20 @@ function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map2
+                  city={{ lat: 52.37403, lng: 4.88969, zoom: 10 }}
+                  points={offers
+                    .filter((offer) => offer.location)
+                    .map((offer) => ({
+                      id: offer.id,
+                      lat: offer.location.latitude,
+                      lng: offer.location.longitude,
+                      title: offer.name,
+                    }))}
+                  selectedPoint={undefined}
+                />
+              </section>
             </div>
           </div>
         </div>
