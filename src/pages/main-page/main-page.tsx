@@ -1,16 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { OffersType } from '../../mocks/offers';
+import { Offer } from '../../types/offer';
+import { Point } from '../../components/map';
 import PlaceCardList from '../../components/place-card-list';
 import Map2 from '../../components/map';
 import CityList from '../../components/city-list';
 import SortingOptions, { SortOption } from '../../components/sorting-options';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeCity } from '../../store/action';
-
-type MainPageProps = {
-  offers: OffersType[];
-};
+import { fetchOffersAction } from '../../store/api-actions';
+import { AppDispatch } from '../../store';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 const CITY_COORDINATES: Record<
   string,
@@ -24,13 +24,23 @@ const CITY_COORDINATES: Record<
   Dusseldorf: { latitude: 51.22774, longitude: 6.77346 },
 };
 
-function MainPage({ offers }: MainPageProps): JSX.Element {
-  const dispatch = useDispatch();
+function MainPage(): JSX.Element {
+  const dispatch = useDispatch<AppDispatch>();
   const selectedCity = useSelector((state: { city: string }) => state.city);
   const selectedSort = useSelector(
     (state: { sortOption: SortOption }) => state.sortOption || 'Popular'
   );
-  const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
+  const offers = useSelector((state: { offers: Offer[] }) => state.offers);
+  const isLoading = useSelector(
+    (state: { isLoading: boolean }) => state.isLoading
+  );
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (offers.length === 0 && !isLoading) {
+      dispatch(fetchOffersAction());
+    }
+  }, [dispatch, offers.length, isLoading]);
 
   const filteredOffers = useMemo(
     () => offers.filter((offer) => offer.city.name === selectedCity),
@@ -42,10 +52,10 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
 
     switch (selectedSort) {
       case 'Price: low to high':
-        sorted.sort((a, b) => a.priceValue - b.priceValue);
+        sorted.sort((a, b) => a.price - b.price);
         break;
       case 'Price: high to low':
-        sorted.sort((a, b) => b.priceValue - a.priceValue);
+        sorted.sort((a, b) => b.price - a.price);
         break;
       case 'Top rated first':
         sorted.sort((a, b) => b.rating - a.rating);
@@ -131,40 +141,47 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
         </div>
         <div className="cities">
           <div className="cities__places-container container">
-            <section className="cities__places places">
-              <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">
-                {cityOffersCount} places to stay in {selectedCity}
-              </b>
-              <SortingOptions />
-              <div className="cities__places-list places__list tabs__content">
-                <PlaceCardList
-                  offers={sortedOffers}
-                  onCardHover={setHoveredCardId}
-                />
-              </div>
-            </section>
-            <div className="cities__right-section">
-              <section className="cities__map map">
-                <Map2
-                  city={{
-                    lat: cityLocation.latitude,
-                    lng: cityLocation.longitude,
-                    zoom: 10,
-                  }}
-                  points={sortedOffers
-                    .filter((offer) => offer.location)
-                    .map((offer) => ({
-                      id: offer.id,
-                      lat: offer.location.latitude,
-                      lng: offer.location.longitude,
-                      title: offer.name,
-                    }))}
-                  selectedPoint={undefined}
-                  hoveredPointId={hoveredCardId}
-                />
-              </section>
-            </div>
+            {isLoading || offers.length === 0 ? (
+              <LoadingScreen />
+            ) : (
+              <>
+                <section className="cities__places places">
+                  <h2 className="visually-hidden">Places</h2>
+                  <b className="places__found">
+                    {cityOffersCount} places to stay in {selectedCity}
+                  </b>
+                  <SortingOptions />
+                  <div className="cities__places-list places__list tabs__content">
+                    <PlaceCardList
+                      offers={sortedOffers}
+                      onCardHover={setHoveredCardId}
+                    />
+                  </div>
+                </section>
+                <div className="cities__right-section">
+                  <section className="cities__map map">
+                    <Map2
+                      city={{
+                        lat: cityLocation.latitude,
+                        lng: cityLocation.longitude,
+                      }}
+                      points={sortedOffers
+                        .filter((offer: Offer) => offer.location)
+                        .map(
+                          (offer: Offer): Point => ({
+                            id: offer.id,
+                            lat: offer.location.latitude,
+                            lng: offer.location.longitude,
+                            title: offer.title,
+                          })
+                        )}
+                      selectedPoint={undefined}
+                      hoveredPointId={hoveredCardId}
+                    />
+                  </section>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </main>

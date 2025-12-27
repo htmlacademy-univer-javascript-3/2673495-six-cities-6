@@ -5,28 +5,18 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import OfferPage from './pages/offer-page/offer-page';
 import NotFoundPage from './pages/not-found-page/not-found-page';
 import PrivateRoute from './components/private-route';
-import { OffersType } from './mocks/offers';
 
-type AppProps = {
-
-  offers: OffersType[];
-};
-
-export default function App({ offers }: AppProps): JSX.Element {
+export default function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={<MainPage offers={offers} />}
-        >
-        </Route>
+        <Route path="/" element={<MainPage />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
         <Route
           path="/favorites"
           element={
             <PrivateRoute isAuthorized>
-              <FavoritesPage offers={offers} />
+              <FavoritesPage />
             </PrivateRoute>
           }
         />

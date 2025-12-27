@@ -1,30 +1,25 @@
 import { Link } from 'react-router-dom';
+import { Offer } from '../types/offer';
 
-export type placeCardProps = {
-  id: number;
-  mark: boolean;
-  imageSrc: string;
-  priceValue: number;
-  rating: number;
-  isInBookmarks: boolean;
-  name: string;
-  type: string;
-};
+export type placeCardProps = Pick<
+  Offer,
+  'id' | 'isPremium' | 'previewImage' | 'price' | 'rating' | 'isFavorite' | 'title' | 'type'
+>;
 
 
 function PlaceCard({
   id,
-  mark,
-  imageSrc,
-  priceValue,
+  isPremium,
+  previewImage,
+  price,
   rating,
-  isInBookmarks,
-  name,
+  isFavorite,
+  title,
   type,
 }: placeCardProps): JSX.Element {
   return (
     <article className="cities__card place-card">
-      {mark && (
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -33,7 +28,7 @@ function PlaceCard({
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
-            src={imageSrc}
+            src={previewImage}
             width="260"
             height="200"
             alt="Place image"
@@ -44,12 +39,12 @@ function PlaceCard({
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{priceValue}</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
             className={`place-card__bookmark-button ${
-              isInBookmarks ? 'place-card__bookmark-button--active' : ''
+              isFavorite ? 'place-card__bookmark-button--active' : ''
             } button`}
             type="button"
           >
@@ -57,7 +52,7 @@ function PlaceCard({
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
             <span className="visually-hidden">
-              {isInBookmarks ? 'In' : 'To'} bookmarks
+              {isFavorite ? 'In' : 'To'} bookmarks
             </span>
           </button>
         </div>
@@ -68,7 +63,7 @@ function PlaceCard({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

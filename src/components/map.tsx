@@ -17,7 +17,7 @@ export type City = {
 };
 
 export type Point = {
-  id: number;
+  id: string;
   lat: number;
   lng: number;
   title?: string;
@@ -29,7 +29,7 @@ type MapProps = {
   city: City;
   points: Points;
   selectedPoint: Point | undefined;
-  hoveredPointId?: number | null;
+  hoveredPointId?: string | null;
 };
 
 const defaultCustomIcon = new Icon({

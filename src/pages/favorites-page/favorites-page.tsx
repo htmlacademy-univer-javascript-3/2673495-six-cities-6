@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
-import { placeCardProps } from '../../components/place-card';
+import { useSelector } from 'react-redux';
+import { Offer } from '../../types/offer';
 import FavoritesCard from '../../components/favorites-card';
 
-type FavoritesPageProps = {
-  offers: placeCardProps[];
-};
-
-export default function FavoritesPage({offers}: FavoritesPageProps): JSX.Element {
-  const favoriteOffers = offers.filter((offer) => offer.isInBookmarks);
+export default function FavoritesPage(): JSX.Element {
+  const offers = useSelector((state: { offers: Offer[] }) => state.offers);
+  const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">
       <header className="header">
@@ -64,19 +62,21 @@ export default function FavoritesPage({offers}: FavoritesPageProps): JSX.Element
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {favoriteOffers.map((offer) => (
-                    <FavoritesCard
-                      key={offer.id}
-                      id={offer.id}
-                      mark={offer.mark}
-                      imageSrc={offer.imageSrc}
-                      priceValue={offer.priceValue}
-                      rating={offer.rating}
-                      isInBookmarks={offer.isInBookmarks}
-                      name={offer.name}
-                      type={offer.type}
-                    />
-                  ))}
+                  {favoriteOffers.map(
+                    (offer: Offer): JSX.Element => (
+                      <FavoritesCard
+                        key={offer.id}
+                        id={offer.id}
+                        isPremium={offer.isPremium}
+                        previewImage={offer.previewImage}
+                        price={offer.price}
+                        rating={offer.rating}
+                        isFavorite={offer.isFavorite}
+                        title={offer.title}
+                        type={offer.type}
+                      />
+                    )
+                  )}
                 </div>
               </li>
             </ul>

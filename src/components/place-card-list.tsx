@@ -1,15 +1,16 @@
-import PlaceCard, { placeCardProps } from './place-card';
+import PlaceCard from './place-card';
+import { Offer } from '../types/offer';
 
 type PlaceCardListProps = {
-  offers: placeCardProps[];
-  onCardHover?: (id: number | null) => void;
+  offers: Offer[];
+  onCardHover?: (id: string | null) => void;
 };
 
 function PlaceCardList({
   offers,
   onCardHover,
 }: PlaceCardListProps): JSX.Element {
-  const handleCardMouseEnter = (id: number) => {
+  const handleCardMouseEnter = (id: string) => {
     onCardHover?.(id);
   };
 
@@ -20,7 +21,7 @@ function PlaceCardList({
   return (
     <div>
       <ul className="places__list">
-        {offers.map((offer) => (
+        {offers.map((offer: Offer) => (
           <li
             key={offer.id}
             onMouseEnter={() => handleCardMouseEnter(offer.id)}
@@ -28,12 +29,12 @@ function PlaceCardList({
           >
             <PlaceCard
               id={offer.id}
-              mark={offer.mark}
-              imageSrc={offer.imageSrc}
-              priceValue={offer.priceValue}
+              isPremium={offer.isPremium}
+              previewImage={offer.previewImage}
+              price={offer.price}
               rating={offer.rating}
-              isInBookmarks={offer.isInBookmarks}
-              name={offer.name}
+              isFavorite={offer.isFavorite}
+              title={offer.title}
               type={offer.type}
             />
           </li>
