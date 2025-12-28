@@ -5,17 +5,17 @@ type FavoritesCardProps = placeCardProps;
 
 function FavoritesCard({
   id,
-  mark,
-  imageSrc,
-  priceValue,
+  isPremium,
+  previewImage,
+  price,
   rating,
-  isInBookmarks,
-  name,
+  isFavorite,
+  title,
   type,
 }: FavoritesCardProps): JSX.Element {
   return (
     <article className="favorites__card place-card">
-      {mark && (
+      {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
@@ -24,7 +24,7 @@ function FavoritesCard({
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
-            src={imageSrc}
+            src={previewImage}
             width={150}
             height={110}
             alt="Place image"
@@ -34,12 +34,12 @@ function FavoritesCard({
       <div className="favorites__card-info place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;{priceValue}</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">/&nbsp;night</span>
           </div>
           <button
             className={`place-card__bookmark-button ${
-              isInBookmarks ? 'place-card__bookmark-button--active' : ''
+              isFavorite ? 'place-card__bookmark-button--active' : ''
             } button`}
             type="button"
           >
@@ -56,7 +56,7 @@ function FavoritesCard({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{name}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
