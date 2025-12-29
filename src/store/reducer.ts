@@ -1,8 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, changeSortOption } from './action';
+import { changeCity, changeSortOption, setAuthorizationStatus } from './action';
 import { SortOption } from '../components/sorting-options';
-import { fetchOffersAction, fetchOfferByIdAction } from './api-actions';
+import {
+  fetchOffersAction,
+  fetchOfferByIdAction,
+  loginAction,
+  checkAuthAction,
+} from './api-actions';
 import { Offer, DetailedOffer } from '../types/offer';
+import { getToken, saveToken, dropToken } from '../services/token';
 
 const initialState: {
   city: string;
@@ -11,6 +17,8 @@ const initialState: {
   isLoading: boolean;
   currentOffer: DetailedOffer | null;
   isOfferLoading: boolean;
+  authorizationStatus: 'AUTH' | 'NO_AUTH';
+  token: string | null;
 } = {
   city: 'Paris',
   offers: [],
@@ -18,6 +26,8 @@ const initialState: {
   isLoading: false,
   currentOffer: null,
   isOfferLoading: false,
+  token: getToken(),
+  authorizationStatus: getToken() ? 'AUTH' : 'NO_AUTH',
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -27,6 +37,13 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSortOption, (state, action) => {
       state.sortOption = action.payload;
+    })
+    .addCase(setAuthorizationStatus, (state, action) => {
+      state.authorizationStatus = action.payload;
+      if (action.payload === 'NO_AUTH') {
+        state.token = null;
+        dropToken();
+      }
     })
     .addCase(fetchOffersAction.pending, (state) => {
       state.isLoading = true;
@@ -47,5 +64,23 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOfferByIdAction.rejected, (state) => {
       state.isOfferLoading = false;
+    })
+    .addCase(checkAuthAction.fulfilled, (state) => {
+      state.authorizationStatus = 'AUTH';
+    })
+    .addCase(checkAuthAction.rejected, (state) => {
+      state.authorizationStatus = 'NO_AUTH';
+      state.token = null;
+      dropToken();
+    })
+    .addCase(loginAction.fulfilled, (state, action) => {
+      state.authorizationStatus = 'AUTH';
+      state.token = action.payload.token;
+      saveToken(action.payload.token);
+    })
+    .addCase(loginAction.rejected, (state) => {
+      state.authorizationStatus = 'NO_AUTH';
+      state.token = null;
+      dropToken();
     });
 });
