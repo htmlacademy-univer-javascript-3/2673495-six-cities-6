@@ -1,15 +1,15 @@
 import { useMemo, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { Point } from '../../components/map';
 import PlaceCardList from '../../components/place-card-list';
 import Map2 from '../../components/map';
 import CityList from '../../components/city-list';
-import SortingOptions, { SortOption } from '../../components/sorting-options';
+import SortingOptions from '../../components/sorting-options';
 import { useSelector, useDispatch } from 'react-redux';
-import { changeCity } from '../../store/action';
+import { changeCity, setAuthorizationStatus } from '../../store/action';
 import { fetchOffersAction } from '../../store/api-actions';
-import { AppDispatch } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import LoadingScreen from '../loading-screen/loading-screen';
 
 const CITY_COORDINATES: Record<
@@ -26,15 +26,22 @@ const CITY_COORDINATES: Record<
 
 function MainPage(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const selectedCity = useSelector((state: { city: string }) => state.city);
+  const navigate = useNavigate();
+  const selectedCity = useSelector((state: RootState) => state.city);
   const selectedSort = useSelector(
-    (state: { sortOption: SortOption }) => state.sortOption || 'Popular'
+    (state: RootState) => state.sortOption || 'Popular'
   );
-  const offers = useSelector((state: { offers: Offer[] }) => state.offers);
-  const isLoading = useSelector(
-    (state: { isLoading: boolean }) => state.isLoading
+  const offers = useSelector((state: RootState) => state.offers);
+  const isLoading = useSelector((state: RootState) => state.isLoading);
+  const authorizationStatus = useSelector(
+    (state: RootState) => state.authorizationStatus
   );
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+
+  const favoriteOffersCount = useMemo(
+    () => offers.filter((offer) => offer.isFavorite).length,
+    [offers]
+  );
 
   useEffect(() => {
     if (offers.length === 0 && !isLoading) {
@@ -100,23 +107,45 @@ function MainPage(): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <Link
-                    className="header__nav-link header__nav-link--profile"
-                    to="/favorites"
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
-                    </span>
-                    <span className="header__favorite-count">3</span>
-                  </Link>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
+                {authorizationStatus === 'AUTH' ? (
+                  <>
+                    <li className="header__nav-item user">
+                      <Link
+                        className="header__nav-link header__nav-link--profile"
+                        to="/favorites"
+                      >
+                        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                        <span className="header__user-name user__name">
+                          Oliver.conner@gmail.com
+                        </span>
+                        <span className="header__favorite-count">
+                          {favoriteOffersCount}
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <a
+                        className="header__nav-link"
+                        onClick={() => {
+                          dispatch(setAuthorizationStatus('NO_AUTH'));
+                          navigate('/');
+                        }}
+                      >
+                        <span className="header__signout">Sign out</span>
+                      </a>
+                    </li>
+                  </>
+                ) : (
+                  <li className="header__nav-item user">
+                    <Link
+                      className="header__nav-link header__nav-link--profile"
+                      to="/login"
+                    >
+                      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                      <span className="header__login">Sign in</span>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>

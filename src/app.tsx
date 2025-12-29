@@ -15,7 +15,7 @@ export default function App(): JSX.Element {
         <Route
           path="/favorites"
           element={
-            <PrivateRoute isAuthorized>
+            <PrivateRoute>
               <FavoritesPage />
             </PrivateRoute>
           }
